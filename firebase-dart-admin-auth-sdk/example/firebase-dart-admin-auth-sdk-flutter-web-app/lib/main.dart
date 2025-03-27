@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase/screens/splash_screen/splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_dart_admin_auth_sdk/firebase_dart_admin_auth_sdk.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -36,16 +39,28 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    //  String accessToken = await getAuthTokenFromGoogleSignIn();
+    late FirebaseAuth auth; 
 
-    late FirebaseAuth auth; // Declare auth variable at top level
-    await FirebaseApp.initializeWithServiceAccountImpersonation(
-      serviceAccountEmail:
-          "'your-target-service-account@your-project.iam.gserviceaccount.com",
-    );
-    //
+    if (kIsWeb) {
+      debugPrint('Initializing Firebase for Web...');
+      await FirebaseApp.initializeAppWithEnvironmentVariables(
+        apiKey: 'AIzaSyDbmws6yjN0B8zjz4Y005yoYQaGAhAQpQo',           
+        authdomain: 'sph-2025-mt-l-smith.firebaseapp.com',     
+        projectId: 'sph-2025-mt-l-smith',       
+        messagingSenderId: '215633423958', 
+        bucketName: 'sph-2025-mt-l-smith.firebasestorage.com',  
+        appId: '1:215633423958:web:81089f6a361086a5de95f7',               
+      );
+      auth = FirebaseApp.instance.getAuth();
+      debugPrint('Firebase initialized for Web.');
+    } else {
+      
+      await FirebaseApp.initializeWithServiceAccountImpersonation(
+        serviceAccountEmail: "'your-target-service-account@your-project.iam.gserviceaccount.com",
+      );
+      auth = FirebaseApp.instance.getAuth();
+    }
 
-    // initialize the facebook javascript SDK
     await FacebookAuth.i.webAndDesktopInitialize(
       appId: "893849532657430",
       cookie: true,
@@ -100,8 +115,7 @@ void main() async {
     // }
 
     debugPrint('Firebase Auth instance obtained.');
-    auth = FirebaseApp.instance.getAuth();
-    // Wrap the app with Provider
+
     runApp(
       Provider<FirebaseAuth>.value(
         value: auth,
@@ -134,3 +148,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
