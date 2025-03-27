@@ -19,12 +19,6 @@ class RevokeAccessTokenService {
     try {
       // Get the current user's ID token
       String? idToken = await _auth.currentUser?.getIdToken();
-      if (idToken == null) {
-        throw FirebaseAuthException(
-          code: 'no-id-token',
-          message: 'Failed to get ID token for current user.',
-        );
-      }
 
       // In a real-world scenario, you might want to make an API call to your backend
       // to revoke the token server-side. For example:

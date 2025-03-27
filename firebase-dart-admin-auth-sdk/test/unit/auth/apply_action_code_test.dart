@@ -1,7 +1,8 @@
 import 'package:ds_tools_testing/ds_tools_testing.dart';
-import 'package:mockito/mockito.dart';
-import '../mocks/firebase_auth_mock.dart';
-
+import 'package:firebase_dart_admin_auth_sdk/firebase_dart_admin_auth_sdk.dart';
+import 'package:firebase_dart_admin_auth_sdk/src/http_response.dart';
+import 'package:mockito/mockito.dart' as mockito;
+class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 void main() {
   group('FirebaseAuth Tests', () {
     late MockFirebaseAuth mockFirebaseAuth;
@@ -19,17 +20,16 @@ void main() {
         body: {'message': 'Success'},
       );
 
-      when(mockFirebaseAuth.performRequest(endpoint, body))
-          .thenAnswer((_) async => expectedResponse);
-
-      // Act
+      mockito.when(mockFirebaseAuth.performRequest(endpoint, body))
+        .thenAnswer((_) async => expectedResponse);
+     
       final result = await mockFirebaseAuth.performRequest(endpoint, body);
 
       // Assert
       expect(result.statusCode, equals(200));
       expect(result.body, containsPair('message', 'Success'));
 
-      verify(mockFirebaseAuth.performRequest(endpoint, body)).called(1);
+      mockito.verify(mockFirebaseAuth.performRequest(endpoint, body)).called(1);
     });
   });
 }

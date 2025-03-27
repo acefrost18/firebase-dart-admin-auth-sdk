@@ -1,4 +1,4 @@
-library firebase_dart_admin_auth_sdk;
+library;
 
 export 'src/firebase_auth.dart';
 export 'src/user_credential.dart';

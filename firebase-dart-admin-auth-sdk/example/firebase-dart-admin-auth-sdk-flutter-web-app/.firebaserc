@@ -9,6 +9,13 @@
           "fire-base-dart-admin-auth-sdk-flutter-web-app-usman"
         ]
       }
+    },
+    "sph-2025-mt-d-yeh": {
+      "hosting": {
+        "firebase-admin-auth-sdk-flutter_web_app-usman": [
+          "sph-2025-mt-d-yeh"
+        ]
+      }
     }
   },
   "etags": {}
